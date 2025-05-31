@@ -1,0 +1,11 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "supervisor": "./src/agent/supervisor.py:graph",
+    "powerful agent": "./src/agent/powerful.py:graph",
+    "sentiment agent": "./src/agent/sub_graph/sentiment/graph.py:graph",
+    "data agent": "./src/agent/sub_graph/data_retrieval/graph.py:graph",
+    "prediction agent": "./src/agent/sub_graph/prediction/graph.py:graph"
+  },
+  "env": ".env"
+}

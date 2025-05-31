@@ -1,0 +1,101 @@
+# ┌──────────────────────────────────────────────────────────────────┐
+# │  Root-level .gitignore for a full-stack React + FastAPI setup  │
+# └──────────────────────────────────────────────────────────────────┘
+
+#── Frontend (React + TypeScript + Tailwind) ─────────────────────────
+
+# Node modules
+/frontend/node_modules/
+
+# Build output (depending on your build tool; include both common folders)
+/frontend/dist/
+/frontend/build/
+
+# Vite cache (if applicable)
+/frontend/.vite/
+# (If you use create-react-app instead of Vite, you might omit .vite/ and keep /build/)
+
+# Environment files
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development
+/frontend/.env.production
+
+# Tailwind/JIT caches (if any)
+/frontend/.cache/
+
+# Logs
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# Editor directories (if you open the frontend folder directly in VSCode/IDE)
+/frontend/.vscode/
+/frontend/.idea/
+
+#── Backend (Python FastAPI) ─────────────────────────────────────────
+
+# Python bytecode
+/backend/__pycache__/
+/backend/**/*.py[cod]
+/backend/**/*.cpython-*
+
+# Virtual environment (common names; adjust if you named it differently)
+/backend/venv/
+/backend/.venv/
+/backend/env/
+/backend/.env
+
+# If you store logs or SQLite files in backend (optional)
+/backend/*.sqlite3
+/backend/*.log
+
+# Dependency directories
+/backend/.mypy_cache/
+/backend/.pytest_cache/
+/backend/__pypackages__/
+
+# Editor directories (if you open backend folder directly)
+/backend/.vscode/
+/backend/.idea/
+
+#── Docker / Dev Data Folders ───────────────────────────────────────
+
+# PostgreSQL data folder
+/postgres-data/
+
+# MinIO (S3-compatible) data folder
+/minio-data/
+
+# Docker Compose overrides (if you have any local override files)
+/docker-compose.override.yml
+/docker-compose.local.yml
+
+#── OS / Tooling / Misc ─────────────────────────────────────────────
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# JetBrains / IntelliJ configs (in case you open the root folder directly)
+.idea/
+
+# VS Code workspace settings (in case you open the root folder directly)
+.vscode/
+
+# npm/yarn global log files (in case something accidentally appears at root)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+.idea
+.vscode
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.*.local

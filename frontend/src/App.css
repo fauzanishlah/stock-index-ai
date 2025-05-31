@@ -1,0 +1,49 @@
+/* @import "tailwindcss/preflight"; */
+@import "tailwindcss";
+@tailwind utilities;
+
+@theme {
+  --animate-flows: flows 0.8s ease infinite;
+  --animate-gradient-shift: gradient-shift 3s ease infinite;
+  --animate-ease-spin: ease-spin 2s ease-in-out infinite;
+
+  @keyframes ease-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    /* 50% {
+      transform: rotate(280deg);
+    } */
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes flows {
+    0% {
+      background-position: 0% 50%;
+    }
+    /* 50 % {
+      background-position: 200% 50%;
+    } */
+    100% {
+      background-position: -200% 50%;
+    }
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 200% 50%;
+    }
+  }
+}
+
+#root {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  text-align: center;
+  /* background-color: black; */
+}

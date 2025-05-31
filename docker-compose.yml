@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  minio:
+    image: "minio/minio:latest"
+    ports:
+      - "${FORWARD_MINIO_PORT:-9000}:9000"
+      - "${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-mlflow}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-password}
+    volumes:
+      - "./minio-data:/data/minio"
+    networks:
+      - app-network
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:9000/minio/health/live"
+      retries: 3
+      timeout: 5s
+
+  mlflow-web:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.mlflow
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-mlflow}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-password}}
+      - MLFlOW_S3_ENDPOINT_URL=${MLFlOW_S3_ENDPOINT_URL:-http://minio:9000}
+    expose:
+      - "5000"
+    ports:
+      - "5555:5000"
+    networks:
+      - app-network
+    entrypoint: mlflow server --backend-store-uri postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres} --default-artifact-root s3://mlflow --artifacts-destination s3://mlflow --host 0.0.0.0 --port 5000
+    depends_on:
+      - db
+      - minio
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - DATABASE_URI=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres}
+      - PROJECT_ID=${GCP_PROJECT_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/google.json
+      - GOOGLE_CLOUD_PROJECT=${GCP_PROJECT_ID}
+      - GOOGLE_CLOUD_LOCATION=global
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/.config/gcloud/application_default_credentials.json:/tmp/keys/google.json:ro
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - mlflow-web
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
