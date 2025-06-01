@@ -1,12 +1,14 @@
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from src.agent.sub_graph.data_retrieval import tools as data_retrieval_tools
 from src.agent.sub_graph.sentiment import tools as sentiment_tools
 from src.agent.sub_graph.prediction import tools as prediction_tools
 from src.agent import prompt
 from src.core.config import settings
 
-model = ChatVertexAI(model_name="gemini-2.0-flash", temperature=0.1, location="global", project=settings.PROJECT_ID)
+# model = ChatVertexAI(model_name="gemini-2.0-flash", temperature=0.1, location="global", project=settings.PROJECT_ID)
+model = ChatGoogleGenerativeAI(model=settings.AGENT_MODEL, temperature=0.1)
 
 graph = create_react_agent(
     model=model, 
