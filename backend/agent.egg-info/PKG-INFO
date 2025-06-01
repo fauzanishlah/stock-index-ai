@@ -27,6 +27,7 @@ Requires-Dist: pydantic-settings>=2.9.1
 Requires-Dist: bcrypt>=4.3.0
 Requires-Dist: uuid7>=0.1.0
 Requires-Dist: langchain-google-genai>=2.1.5
+Requires-Dist: boto3>=1.38.27
 Provides-Extra: dev
 Requires-Dist: mypy>=1.11.1; extra == "dev"
 Requires-Dist: ruff>=0.6.1; extra == "dev"

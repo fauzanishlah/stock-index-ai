@@ -27,6 +27,7 @@ dependencies = [
     "bcrypt>=4.3.0",
     "uuid7>=0.1.0",
     "langchain-google-genai>=2.1.5",
+    "boto3>=1.38.27",
 ]
 
 
