@@ -45,12 +45,17 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-password}}
       - MLFlOW_S3_ENDPOINT_URL=${MLFlOW_S3_ENDPOINT_URL:-http://minio:9000}
     expose:
-      - "5555"
+      - "5000"
     ports:
       - "5555:5000"
     networks:
       - app-network
-    entrypoint: mlflow server --backend-store-uri postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres} --default-artifact-root s3://mlflow --artifacts-destination s3://mlflow --host 0.0.0.0 --port 5000
+    entrypoint: mlflow ui
+      --backend-store-uri postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres}
+      --default-artifact-root s3://mlflow
+      --artifacts-destination s3://mlflow
+      --host 0.0.0.0
+      --port 5000
     depends_on:
       - db
       - minio
@@ -61,10 +66,9 @@ services:
     environment:
       - DATABASE_URI=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres}
       - PROJECT_ID=${GCP_PROJECT_ID}
-      - GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/google.json
       - GOOGLE_CLOUD_PROJECT=${GCP_PROJECT_ID}
       - GOOGLE_CLOUD_LOCATION=global
-      - MLFLOW_TRACKING_URL=http://mlflow-web:5555
+      - MLFLOW_TRACKING_URL=http://mlflow-web:5000
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     expose:
       - "8000"
@@ -98,6 +102,7 @@ services:
     depends_on:
       - backend
       - frontend
+      - mlflow-web
     networks:
       - app-network
 

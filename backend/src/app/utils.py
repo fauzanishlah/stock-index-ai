@@ -3,9 +3,11 @@ from typing import List
 import json 
 from sqlmodel import Session
 from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from src.crud import chat_crud
 from src.models.chat_models import ChatMessage
+from src.core.config import settings
 
 class UUIDEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -21,13 +23,15 @@ def format_messages(messages: List[ChatMessage]) -> List[str]:
     return formatted_messages
     
 def generate_summary_text(db: Session, session_id: UUID):
-    model = ChatVertexAI(
-        model_name="gemini-2.0-flash",
-        temperature=0.7,
-        max_output_tokens=400,
-        top_p=0.95,
-        top_k=40,
-    )
+    # model = ChatVertexAI(
+    #     model_name="gemini-2.0-flash",
+    #     temperature=0.7,
+    #     max_output_tokens=400,
+    #     top_p=0.95,
+    #     top_k=40,
+    # )
+    model = ChatGoogleGenerativeAI(model=settings.AGENT_MODEL, temperature=0.7, max_output_tokens=400, top_p=0.95, top_k=40)
+
     chat_messages = chat_crud.get_chat_messages_by_session_id(db, session_id)
     if not chat_messages:
         return "No messages in this session."

@@ -6,6 +6,12 @@ import pandas as pd
 from typing import List, Dict
 from langchain.schema import HumanMessage, SystemMessage
 from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+from src.core.config import settings
+
+
+
 
 @tool("forecast_stock_returns", parse_docstring=True)
 def forecast_stock_returns(ticker: str, sentiment_score: float, n_days: int) -> Dict[str, Any]:
@@ -133,7 +139,8 @@ def analyze_stock_trends(
         }
 
         # Generate recommendation using Gemini
-        model = ChatVertexAI(model_name="gemini-2.0-flash", temperature=0.2)
+        # model = ChatVertexAI(model_name="gemini-2.0-flash", temperature=0.2)
+        model = ChatGoogleGenerativeAI(model=settings.AGENT_MODEL, temperature=0.2)
         prompt = _build_recommendation_prompt(ticker, analysis, sentiment_score)
         response = model.invoke(prompt)
         response = response.content
