@@ -12,7 +12,6 @@ import { showToast } from "@/lib/toast";
 import useChatData from "@/hooks/useChatData";
 import SkeletonGeneratingChat from "../ui/SkeletonGeneratingChat";
 import "react-loading-skeleton/dist/skeleton.css";
-import UserProfileModal from "../UserProfileModal";
 
 export const ChatPage = () => {
   const { chatId: sessionId } = useParams<{ chatId: string }>();

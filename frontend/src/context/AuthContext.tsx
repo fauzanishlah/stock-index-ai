@@ -75,7 +75,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     setLoading(true);
     setError(null);
-    const LoginURL = "http://localhost:8000/api/login"; // Replace with your actual login API endpoint
+    const BaseAPI = import.meta.env.VITE_API_URL;
+    console.log(BaseAPI);
+    const LoginURL = BaseAPI + "/login";
 
     try {
       // Replace with actual API call
@@ -90,7 +92,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         body: new URLSearchParams({ username, password }).toString(),
       });
       if (!response.ok) {
-        throw new Error("Invalid credentials");
+        if (response.status === 401) {
+          throw new Error("Invalid credentials");
+        }
+        throw new Error("Login failed, something wrong");
       }
       const userData: UserAPIResponse = await response.json();
       localStorage.setItem("user", JSON.stringify(userData));

@@ -80,8 +80,9 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchChatSessions = async () => {
     console.log("Fetching chat sessions...", user);
-    setLoadingSessions(true);
+
     try {
+      setLoadingSessions(true);
       const db = await dbPromise;
       const sessionsCached = await db.getAll("chatSessions");
       if (sessionsCached.length === 0) {
@@ -102,7 +103,6 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       setErrorSessions(error as Error);
-      setLoadingSessions(false);
     } finally {
       setLoadingSessions(false);
     }
@@ -131,7 +131,6 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       setErrorMessages(error as Error);
-      setLoadingMessages(false);
     } finally {
       setLoadingMessages(false);
     }

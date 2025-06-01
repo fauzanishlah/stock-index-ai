@@ -23,7 +23,7 @@ export const Sidebar = () => {
       console.log("chat sessions fetched");
     };
     fetchData();
-  }, [user?.id, chatSessions.length, loadingSessions]);
+  }, [user?.id, chatSessions.length]);
   console.log(chatSessions);
   return (
     <aside

@@ -1,9 +1,9 @@
 import { ChatMessage, ChatSession, UserToken } from '@/types/chat';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-// const API_BASE = 'http://localhost:5000/api';
-const CHAT_API_BASE = 'http://localhost:8000/api/chat';
-const AGENT_API = 'http://localhost:8000/api/agent/chat';
+const API_BASE = import.meta.env.VITE_API_URL;
+const CHAT_API_BASE = API_BASE + '/chat';
+const AGENT_API = API_BASE + '/agent/chat';
 // const AGENT_API = 'http://localhost:8000/api/agent/test-sse';
 
 
