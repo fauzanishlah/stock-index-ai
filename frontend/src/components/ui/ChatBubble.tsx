@@ -5,6 +5,7 @@ import { useState } from "react";
 import { MarkdownComponents } from "../utils/markdown";
 import Markdown from "react-markdown";
 import { RiRobot2Line } from "react-icons/ri";
+import remarkGfm from "remark-gfm";
 
 interface ChatBubbleProps {
   role: "human" | "ai" | "tool";
@@ -41,7 +42,12 @@ const AIBubble = ({ content }: ChatBubbleProps) => {
         content.length === 0 && "hidden"
       )}
     >
-      <ReactMarkdown components={MarkdownComponents}>{content}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={MarkdownComponents}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 };
