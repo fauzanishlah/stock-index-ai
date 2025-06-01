@@ -89,7 +89,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({ username, password }).toString(),
+        body: new URLSearchParams({
+          username,
+          password,
+          grant_type: "password",
+        }).toString(),
       });
       if (!response.ok) {
         if (response.status === 401) {

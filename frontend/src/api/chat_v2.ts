@@ -100,7 +100,7 @@ export const chatAPI = {
   },
 
   async updateSession(sessionId: string, updates: Partial<ChatSession>): Promise<ChatSession> {
-    const response = await fetch(`http://localhost:8000/api/chats/${sessionId}/`, {
+    const response = await fetch(`${CHAT_API_BASE}/s/${sessionId}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export const chatAPI = {
   },
 
   async deleteSession(sessionId: string): Promise<void> {
-    const response = await fetch(`http://localhost:8000/api/chats/${sessionId}/`, {
+    const response = await fetch(`${CHAT_API_BASE}/s/${sessionId}/`, {
       method: 'DELETE',
       headers: {
         Authorization: getAuthHeader(),

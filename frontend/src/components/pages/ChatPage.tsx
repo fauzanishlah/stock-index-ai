@@ -158,6 +158,14 @@ export const ChatPage = () => {
                   ) {
                     return (
                       <div className="">
+                        <ChatBubble
+                          content={message.content}
+                          role={message.role}
+                          key={message.message_id}
+                          createdAt={message.created_at}
+                          isGenerating={isGenerating}
+                          isShowAIIcon={isFirstAI}
+                        />
                         <SkeletonGeneratingChat key={message.message_id} />
                       </div>
                     );
