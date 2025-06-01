@@ -41,6 +41,7 @@
 
 /backend/**/*.py[cod]
 /backend/**/*.cpython-*
+/backend/**/*.egg-info/
 
 # Virtual environment (common names; adjust if you named it differently)
 /backend/venv/
