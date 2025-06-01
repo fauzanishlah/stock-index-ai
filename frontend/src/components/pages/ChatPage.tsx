@@ -148,6 +148,7 @@ export const ChatPage = () => {
             <div className="grow-1 m-auto w-full pb-6 mt-4 flex flex-col items-center">
               <div className="relative background-transparent w-250 max-w-19/20">
                 {chatMessages.map((message, i, arr) => {
+                  if (message.session_id !== sessionId) return null;
                   const isFirstAI: boolean =
                     message.role !== "human" && arr[i - 1]?.role === "human";
 
