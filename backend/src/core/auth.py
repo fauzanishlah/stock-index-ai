@@ -11,7 +11,7 @@ from src.db.database import get_db
 SECRET_KEY = "secretsecret"
 ALGORITHM = "HS256"
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
