@@ -14,6 +14,7 @@ MLFLOW_TRACKING_URL = settings.MLFLOW_TRACKING_URL
 features = ['return', 'return_3d_avg', 'return_5d_avg', 'return_7d_avg', 'sentiment_fill_1_1d']
 
 def load_model(ticker: str):
+    print("MLFLOW_TRACKING_URL", MLFLOW_TRACKING_URL)
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URL)
     with tempfile.TemporaryDirectory() as tmp:
         loaded_model = mlflow.tensorflow.load_model(f"models:/model-{ticker}/latest", tmp)
