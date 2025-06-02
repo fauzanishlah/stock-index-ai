@@ -37,6 +37,10 @@ WORKDIR /app
 
 EXPOSE 8000
 
+# Download the vader_lexicon into a system‐wide NLTK_DATA path
+#    (NLTK will look in /usr/local/share/nltk_data by default)
+RUN python -m nltk.downloader vader_lexicon -d /usr/local/share/nltk_data
+
 # Reset the entrypoint
 ENTRYPOINT []
 
