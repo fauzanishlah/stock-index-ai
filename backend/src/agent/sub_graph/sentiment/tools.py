@@ -1,8 +1,11 @@
 from langchain.schema import HumanMessage, AIMessage
 from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
 
 from src.agent.sub_graph.sentiment.helper import vader_sentiment
+from src.core.config import settings
+
 
 
 @tool("translate_to_english", parse_docstring=True)
@@ -52,7 +55,8 @@ def translate_to_english(text: str) -> dict:
         
         # Configure model if not provided
         
-        model = ChatVertexAI(model_name="gemini-2.0-flash", temperature=0)
+        # model = ChatVertexAI(model_name="gemini-2.0-flash", temperature=0)
+        model = ChatGoogleGenerativeAI(model=settings.AGENT_MODEL, temperature=0)
         
         # Create translation prompt
         prompt = [
