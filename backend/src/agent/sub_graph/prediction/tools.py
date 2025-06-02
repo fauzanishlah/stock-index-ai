@@ -22,6 +22,7 @@ def forecast_stock_returns(ticker: str, sentiment_score: float, n_days: int) -> 
     - Creating sentiment-aware price movement predictions
     - Evaluating how news-driven sentiment might impact short-term returns
     - Generating time-sensitive trade signals for portfolio rebalancing
+    - The forecast returns are in percentage, the value range between -100 to 100
 
     Args:
         ticker (str): IDX Company stock symbol  (e.g., 'TLKM')
