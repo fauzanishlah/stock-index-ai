@@ -83,6 +83,7 @@ export const ChatPage = () => {
   };
 
   const handleOnClose = () => {
+    // setIsGenerating(false);
     // generatedChatMessages.map((message) => {
     //   console.log("add message from generated message", message);
     //   addMessage(message);

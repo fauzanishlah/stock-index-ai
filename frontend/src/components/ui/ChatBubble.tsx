@@ -8,6 +8,7 @@ import { RiRobot2Line } from "react-icons/ri";
 import { LiaToolsSolid } from "react-icons/lia";
 import remarkGfm from "remark-gfm";
 import DataDisplay from "./DataDisplay";
+import ChatLoadingCircle from "./ChatLoadingCircle";
 
 interface ChatBubbleProps {
   role: "human" | "ai" | "tool";
@@ -65,7 +66,7 @@ const ToolBubble = ({ content, additionalKwargs }: ChatBubbleProps) => {
   return (
     <div
       className={cn(
-        "flex flex-col p-1 rounded-xl border",
+        "flex flex-col p-1 rounded-xl border mx-4",
         toolCallDetails.status === "success"
           ? "border-blue-400"
           : "border-red-400"
@@ -139,10 +140,14 @@ const ToolBubble = ({ content, additionalKwargs }: ChatBubbleProps) => {
   );
 };
 
-export const AILogo = ({ isShowAIIcon = false }: AILogoProps) => {
+export const AILogo = ({ isShowAIIcon = false, isGenerating }: AILogoProps) => {
   return isShowAIIcon ? (
     <div className="relative size-full block">
       <RiRobot2Line className="absolute size-full top-1/2 left-1/2 -translate-1/2" />
+
+      {isGenerating && (
+        <ChatLoadingCircle className="absolute top-1/2 left-1/2 -translate-1/2 w-[calc(100%_+_1rem)] h-[calc(100%_+_1rem)]" />
+      )}
     </div>
   ) : null;
 };
@@ -158,8 +163,23 @@ export const ChatBubble = ({
   return (
     <>
       <div className="relative w-full mt-2">
-        <div className="size-7 absolute right-full mr-1 mt-2">
-          <AILogo isShowAIIcon={isShowAIIcon} isGenerating={isGenerating} />
+        <div className="flex flex-row w-full">
+          <div className="size-7 absolute right-full mr-1 mt-2">
+            <AILogo isShowAIIcon={isShowAIIcon} isGenerating={isGenerating} />
+          </div>
+          {isShowAIIcon && isGenerating && (
+            <div className="px-4 py-1">
+              <span
+                className={cn(
+                  "bg-[length:200%_auto]",
+                  "bg-gradient-to-r from-blue-600/70 via-gray-500/50 to-blue-600/70 bg-clip-text text-transparent",
+                  "animate-flows"
+                )}
+              >
+                AI Thinking...
+              </span>
+            </div>
+          )}
         </div>
         <div
           className={cn(
