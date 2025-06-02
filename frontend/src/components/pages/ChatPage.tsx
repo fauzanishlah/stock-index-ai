@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { showToast } from "@/lib/toast";
 import useChatData from "@/hooks/useChatData";
 import SkeletonGeneratingChat from "../ui/SkeletonGeneratingChat";
-import "react-loading-skeleton/dist/skeleton.css";
+// import "react-loading-skeleton/dist/skeleton.css";
 
 export const ChatPage = () => {
   const { chatId: sessionId } = useParams<{ chatId: string }>();
@@ -74,6 +74,8 @@ export const ChatPage = () => {
         message_id: data.message_id,
         role: data.role,
         content: data.content,
+        additional_kwargs: data.additional_kwargs,
+        tool_calls: data.tool_calls,
         created_at: new Date(),
       };
       addMessage(newMessage);
@@ -134,6 +136,14 @@ export const ChatPage = () => {
     }
   };
 
+  let lastHumanIndex = 0;
+  for (let i = chatMessages.length - 1; i >= 0; i--) {
+    if (chatMessages[i].role === "human") {
+      lastHumanIndex = i;
+      break;
+    }
+  }
+
   return (
     <div className="h-screen w-full flex flex-col">
       <div className="shadow-xl grow-0 shrink-0">
@@ -171,7 +181,9 @@ export const ChatPage = () => {
                       </div>
                     );
                   }
-
+                  // if (message.role === "tool" && i === arr.length - 1) {
+                  //   return <SkeletonGeneratingChat key={message.message_id} />;
+                  // }
                   return (
                     <div
                       ref={i === arr.length - 1 ? messagesEndRef : null}
@@ -182,7 +194,9 @@ export const ChatPage = () => {
                         role={message.role}
                         key={message.message_id}
                         createdAt={message.created_at}
-                        isGenerating={isGenerating}
+                        additionalKwargs={message.additional_kwargs}
+                        toolCall={message.tool_calls}
+                        isGenerating={isGenerating && i >= lastHumanIndex}
                         isShowAIIcon={isFirstAI}
                       />
                     </div>

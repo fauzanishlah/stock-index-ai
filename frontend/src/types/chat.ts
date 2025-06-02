@@ -12,8 +12,8 @@ interface ChatMessage {
   message_id: string;
   role: 'human' | 'ai' | 'tool';
   content: string;
-  toolCall?: Record<string, any>[];
-  additionalKwargs?: Record<string, any>;
+  tool_calls?: Record<string, any>[];
+  additional_kwargs?: Record<string, any>;
   created_at: Date;
 }
 

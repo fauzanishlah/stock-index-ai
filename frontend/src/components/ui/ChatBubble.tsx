@@ -5,7 +5,9 @@ import { useState } from "react";
 import { MarkdownComponents } from "../utils/markdown";
 import Markdown from "react-markdown";
 import { RiRobot2Line } from "react-icons/ri";
+import { LiaToolsSolid } from "react-icons/lia";
 import remarkGfm from "remark-gfm";
+import DataDisplay from "./DataDisplay";
 
 interface ChatBubbleProps {
   role: "human" | "ai" | "tool";
@@ -51,7 +53,7 @@ const AIBubble = ({ content }: ChatBubbleProps) => {
     </div>
   );
 };
-const ToolBubble = ({ content }: ChatBubbleProps) => {
+const ToolBubble = ({ content, additionalKwargs }: ChatBubbleProps) => {
   const [isShowDetails, setIsShowDetails] = useState(false);
 
   const handleToggleDetails = () => {
@@ -61,34 +63,83 @@ const ToolBubble = ({ content }: ChatBubbleProps) => {
   const toolCallDetails = JSON.parse(content);
 
   return (
-    <div className="max-w-3/5 relative flex flex-row gap-4 rounded-xl bg-gray-100 px-4 py-1 items-center">
+    <div
+      className={cn(
+        "flex flex-col p-1 rounded-xl border",
+        toolCallDetails.status === "success"
+          ? "border-blue-400"
+          : "border-red-400"
+      )}
+    >
       <div
-        className={cn(
-          "h-4 w-4 absolute left-1 top-1 bg-red-400 transition-all duration-600 ease-in-out cursor-pointer",
-          isShowDetails && "rotate-45"
-        )}
         onClick={handleToggleDetails}
-      ></div>
-      {!isShowDetails && (
-        <div className="flex flex-col">
-          {Object.entries(toolCallDetails).map(([key, value]) =>
-            key === "status" ? (
-              <div key={key} className="text-sm text-gray-700">
-                <span className="font-semibold">{key}:</span> {String(value)}
-              </div>
-            ) : (
-              <div key={key} className="text-sm text-gray-700">
-                <span className="font-semibold">{key}:</span> {String(value)}
-              </div>
-            )
+        className={cn(
+          "flex flex-row cursor-pointer items-center mx-1 gap-2",
+          toolCallDetails.status === "success"
+            ? "text-blue-400"
+            : "text-red-400"
+        )}
+      >
+        <LiaToolsSolid
+          className={cn(
+            "transition-all duration-600 ease-in-out -rotate-90",
+            isShowDetails && "rotate-90"
           )}
+        />
+        <span>
+          {additionalKwargs?.tool_name ? additionalKwargs.tool_name : "Tool"}
+        </span>
+      </div>
+      {isShowDetails && (
+        <div>
+          <hr />
+          <div>
+            {/* <span>{toolCallDetails}</span> */}
+            <DataDisplay
+              data={
+                toolCallDetails.data
+                  ? toolCallDetails.data
+                  : toolCallDetails.error
+              }
+            />
+          </div>
         </div>
       )}
     </div>
+    // <div className="max-w-3/5 relative flex flex-row gap-4 rounded-xl bg-gray-100 px-4 py-1 items-center">
+    //   <div
+    //     className={cn(
+    //       "h-4 w-4 absolute left-1 top-1 transition-all duration-600 ease-in-out cursor-pointer",
+    //       isShowDetails && "rotate-45"
+    //     )}
+    //     onClick={handleToggleDetails}
+    //   >
+    //     <LiaToolsSolid />
+    //   </div>
+    //   <div>tool</div>
+    //   {isShowDetails && (
+    //     <div className="flex flex-col">
+    //       {Object.entries(toolCallDetails).map(([key, value]) =>
+    //         key === "status" ? (
+    //           <div key={key} className="text-sm text-gray-700">
+    //             <span className="font-semibold">{key}:</span> {String(value)}
+    //           </div>
+    //         ) : (
+    //           <div key={key} className="text-sm text-gray-700">
+    //             <span className="font-semibold">{key}:</span>{" "}
+    //             {typeof value === "object"
+    //               ? JSON.stringify(value)
+    //               : String(value)}
+    //           </div>
+    //         )
+    //       )}
+    //     </div>
+    //   )}
+    // </div>
   );
 };
 
-const AILogo = ({ isShowAIIcon = false }: AILogoProps) => {
+export const AILogo = ({ isShowAIIcon = false }: AILogoProps) => {
   return isShowAIIcon ? (
     <div className="relative size-full block">
       <RiRobot2Line className="absolute size-full top-1/2 left-1/2 -translate-1/2" />
@@ -100,6 +151,7 @@ export const ChatBubble = ({
   role,
   content,
   createdAt,
+  additionalKwargs,
   isShowAIIcon,
   isGenerating,
 }: ChatBubbleProps) => {
@@ -122,7 +174,12 @@ export const ChatBubble = ({
             <AIBubble role={role} content={content} createdAt={createdAt} />
           )}
           {role === "tool" && (
-            <ToolBubble role={role} content={content} createdAt={createdAt} />
+            <ToolBubble
+              role={role}
+              content={content}
+              createdAt={createdAt}
+              additionalKwargs={additionalKwargs}
+            />
           )}
         </div>
       </div>
