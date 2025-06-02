@@ -51,10 +51,10 @@ services:
     networks:
       - app-network
     entrypoint: mlflow server
-      --backend-store-uri postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres}
-      --default-artifact-root s3://mlflow
       --serve-artifacts
+      --backend-store-uri postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-postgres}
       --artifacts-destination s3://mlflow
+      --default-artifact-root mlflow-artifacts:/artifacts
       --host 0.0.0.0
       --port 5000
     depends_on:
